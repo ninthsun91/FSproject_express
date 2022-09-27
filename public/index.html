@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TITLE</title>
+
+        <script>
+            function test() {
+                fetch("/test")
+                    .then((response)=>{
+                        response.json().then(x=>console.log(x))
+                    });
+            }
+
+            function connect() {
+                console.log("connect")
+                fetch("/connect").then((res)=>console.log(res));
+            }
+
+            function closeDb() {
+                console.log("close")
+                fetch("/close").then((res)=>console.log(res));
+            }
+        </script>
+    </head>
+    <body>
+        <h1>THIS IS INDEX</h1>
+        <button onclick="test()">TEST BUTTON</button>
+        <button onclick="connect()">connect</button>
+        <button onclick="closeDb()">close</button>        
+    </body>
+</html>
