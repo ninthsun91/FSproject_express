@@ -2,15 +2,34 @@
 <html>
     <head>
         <title>TITLE</title>
+    </head>
+    <body>
+        <h1>THIS IS INDEX</h1>
+        <button onclick="test()">TEST BUTTON</button>
+        <button onclick="connect()">connect</button>
+        <button onclick="closeDb()">close</button>    
 
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
-            function test() {
-                fetch("/test")
-                    .then((response)=>{
-                        response.json().then(x=>console.log(x))
-                    });
-            }
+            
+            // function test() {
+            //     fetch("/book/reveiw?id=63287f064030fced9a28aa58")
+            //         .then((response)=>{
+            //             response.json().then(x=>console.log(x))
+            //         });
+            // }
 
+
+
+            function test() {
+                console.log("TEST CLICK");
+                axios.get("/book/likes?id=63287f094030fced9a28aa60&flag=true")
+                .then( (data)=>{
+                    console.log("RESPONSE")
+                    console.log(data);
+                });
+            }
+            
             function connect() {
                 console.log("connect")
                 fetch("/connect").then((res)=>console.log(res));
@@ -21,11 +40,5 @@
                 fetch("/close").then((res)=>console.log(res));
             }
         </script>
-    </head>
-    <body>
-        <h1>THIS IS INDEX</h1>
-        <button onclick="test()">TEST BUTTON</button>
-        <button onclick="connect()">connect</button>
-        <button onclick="closeDb()">close</button>        
     </body>
 </html>

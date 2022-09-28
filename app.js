@@ -60,6 +60,7 @@ app.use((err, req, res, next) => {
 });
 
 
+// terminate server when fails to connect DB
 dbConnection.connectToServer( (err)=>{
     if (err) {
         console.log(err);
@@ -77,3 +78,6 @@ dbConnection.connectToServer( (err)=>{
 
 
 export default app;
+
+
+// set DEBUG=fullstack_express:* & npm start

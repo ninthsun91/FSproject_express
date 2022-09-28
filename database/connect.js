@@ -36,7 +36,7 @@ const dbConnection = {
 export default dbConnection;
 
 // export default class DbConnection {
-//     dbConnection;
+//     dbConnection = {};
 
 //     connectToServer(callback) {
 //         client.connect()
@@ -60,8 +60,8 @@ export default dbConnection;
 // }
 
 
-// export default async function getDb(callback) {
-//     await client.connect()
+// export default function getDb(callback) {
+//     client.connect()
 //         .catch( (err, db)=>{
 //             if (err || !db) {
 //                 console.log(err);

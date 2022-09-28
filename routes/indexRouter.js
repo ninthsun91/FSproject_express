@@ -11,11 +11,23 @@ router.get("/", (req, res)=>{
 });
 
 
+router.get("/list", (req, res)=>{
+    const dbConnect = DbConnection.getDb();
+
+    const bookList = Array.from(dbConnect
+        .collection("books")
+        .find());
+
+    res.json({ "bookList": bookList })
+});
+
+
 router.get("/test", (req, res)=>{
     const dbConnect = DbConnection.getDb();
 
     dbConnect
-        .collection("users").findOne({}, (err, user)=>{
+        .collection("users")
+        .findOne({}, (err, user)=>{
             console.log(user);
             res.send({ "msg": "SUCCESS", "user": user });
         });
@@ -36,21 +48,3 @@ router.get("/close", (req, res)=>{
 
 
 export default router;
-
-
-// const document = {
-//     "username": "express",
-//     "password": "express",
-//     "email": "express@node.com",
-// }
-
-// dbConnect
-//     .collection("users")
-//     .insertOne(document, (err, result) => {
-//         if (err) {
-//             console.log("Error inserting document!");
-//         } else {
-//             console.log("INSERT ONE")
-//             return result.insertedId;
-//         }
-//     });
