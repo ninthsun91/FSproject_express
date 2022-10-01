@@ -1,74 +1,21 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-const connectionString = "";
-const client = new MongoClient(connectionString);
+dotenv.config();
 
+const mongoDb = process.env.MONGODB_URL;
 
-const dbConnection = {
-    dbConnection: {},
-
-    connectToServer(callback) {
-        client.connect()
-            .then( (db)=>{
-                this.dbConnection = db.db("minibook");
-                console.log("Successfully connected to MongoDB.")
-
-                return callback();
-            })
-            .catch( (err, db)=>{
-                if (err || !db) {
-                    return callback(err);
-                }
-            });
-    },
-
-    getDb: function() {
-        return this.dbConnection;
-    },
-
-    closeDb: function() {
-        client.close();
-    }
+export default function() {
+    mongoose
+        .connect(mongoDb, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            dbName: "minibook",
+        })
+        .then(()=>{
+            console.log("DB connected")
+        })
+        .catch((err)=>console.error.bind(err));
 }
 
-export default dbConnection;
-
-// export default class DbConnection {
-//     dbConnection = {};
-
-//     connectToServer(callback) {
-//         client.connect()
-//             .then( (db)=>{
-//                 this.dbConnection = db.db("miniboook");
-//                 console.log("Successfully connected to MongoDB.")
-//                 console.log("from connect.js", this.dbConnection)
-
-//                 return callback();
-//             })
-//             .catch( (err, db)=>{
-//                 if (err || !db) {
-//                     return callback(err);
-//                 }
-//             });
-//     }
-
-//     getDb() {
-//         return this.dbConnection;
-//     }
-// }
-
-
-// export default function getDb(callback) {
-//     client.connect()
-//         .catch( (err, db)=>{
-//             if (err || !db) {
-//                 console.log(err);
-//                 process.exit();
-//             }
-//         });
-
-//     const dbConnection = db.db("minibook");
-//     console.log("Successfully connected to MongoDB.");
-
-//     return callback();
-// }
+mongoose.connection.on("error", console.error.bind(console, "MongoDB Connection Fail"));

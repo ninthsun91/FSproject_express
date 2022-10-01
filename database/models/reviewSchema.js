@@ -1,35 +1,20 @@
-import { DateTime } from "luxon";
-import { reviewInsertOne } from "../controllers/reviewControllers";
+import mongoose from "mongoose";
 
 
-class ReviewSchema {
-    constructor( _id, book_id, username, content, rating, time ) {
-        this._id = _id
-        this.book_id = book_id
-        this.username = username
-        this.content = content
-        this.rating = rating
-        this.time = time
-    }
-
-    insert() {
-        this.time = DateTime.DATETIME_MED;
-        const document = {
-            "book_id": this.book_id,
-            "username": this.username,
-            "content": this.content,
-            "rating": this.rating,
-            "time": this.time,
-        }
-        this._id = reviewInsertOne(document);
-
-        console.log(`review inserted, ${this._id}`);
-    }
-
-    getURL() {
-        return "/review/" + this._id;
-    }
-}
+const Schema = mongoose.Schema;
 
 
-export default ReviewSchema;
+const ReviewSchema = new Schema({
+    book_id: { type: Schema.Types.ObjectId, ref: "Book", required: true },
+    username: { type: String, requied: true },
+    content: { type: String, required: true },
+    rating: { type: Number, required: true },
+    time: { type: Date, required: true },
+}, { timestamps: true });
+
+ReviewSchema.virtual("url").get(function() {
+    return `/review/${this._id}`;
+});
+
+
+export default mongoose.model("Review", ReviewSchema);

@@ -3,9 +3,9 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import path from "path";
 import session from "express-session";
-import dotenv from "dotenv";
+import pug from "pug";
 
-import dbConnection from "./database/connect.js";
+import connectDb from "./database/connect.js";
 
 // import Routers
 import bookRouter from "./routes/bookRouter.js";
@@ -20,11 +20,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 
+import dotenv from "dotenv";
 dotenv.config();
 
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+
+app.set("views", path.join(__dirname, "views"))
+app.set("view engine", "pug");
 
 
 // Middlewares
@@ -51,6 +56,9 @@ app.use("/mypage", mypageRouter);
 app.use("/user", userRouter);
 
 
+connectDb();
+
+
 // error handler
 app.use((err, req, res, next) => {
     res.locals.message = err.message;
@@ -60,24 +68,26 @@ app.use((err, req, res, next) => {
 });
 
 
-// terminate server when fails to connect DB
-dbConnection.connectToServer( (err)=>{
-    if (err) {
-        console.log(err);
-        process.exit();
-    }
-
-    app.listen(port, ()=>{
-        console.log(`running on port number ${port}`);
-    });
+app.listen(port, ()=>{
+    console.log(`running on port number ${port}`);
 });
-
-// app.listen(port, ()=>{
-//     console.log(`running on port number ${port}`);
-// });
-
-
+    
+    
 export default app;
-
+    
 
 // set DEBUG=fullstack_express:* & npm start
+
+
+
+// // terminate server when fails to connect DB
+// dbConnection.connectToServer( (err)=>{
+//     if (err) {
+//         console.log(err);
+//         process.exit();
+//     }
+
+//     app.listen(port, ()=>{
+//         console.log(`running on port number ${port}`);
+//     });
+// });
